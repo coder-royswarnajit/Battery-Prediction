@@ -62,6 +62,4 @@ Models are evaluated using:
 - Experiment with Quantum Neural Networks (QNN) using Qiskit.
 - Incorporate real-time battery performance monitoring.
 
-## Author
-Developed as part of a battery life prediction research project using machine learning and ensemble modeling techniques.
 
