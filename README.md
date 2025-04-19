@@ -1,65 +1,98 @@
-# Battery Life Prediction using Machine Learning
+```markdown
+# Tic-Tac-Toe Frame Component
 
-## Project Overview
-This project aims to predict battery life for various electronic devices using machine learning techniques. The dataset is preprocessed to extract key features, and multiple regression models are trained to estimate battery life accurately. The project includes single-model training and pairwise ensemble model training for better predictive performance.
+This document provides a technical overview of the `Frame.java` file, which is responsible for creating and managing the main window of the Tic-Tac-Toe game application.
 
-## Project Structure
-- `device_battery_data.xlsx`: Dataset containing battery performance metrics for different devices.
-- `Single_Models.py`: Script to train and evaluate individual machine learning models.
-- `Pair_Models.py`: Script to train and evaluate ensemble models using pairwise stacking regressors.
+## Overview
 
-## Features and Preprocessing
-The dataset includes features such as:
-- **Battery Capacity (mAh)** and **Battery Voltage (V)** to calculate total battery energy.
-- **Charging Cycles**, **Device Age**, and **Battery Lifespan** to compute battery degradation.
-- **Operating Temperature** and **Environmental Conditions** to adjust for external factors.
-- **Power Consumption in Active and Sleep Modes** to estimate daily energy usage.
+The `Frame` class extends `JPanel` and utilizes `JFrame` to create the main window for the Tic-Tac-Toe game. It sets up the window's dimensions, title, close operation, and adds the game panel to it.
 
-Feature engineering steps include:
-- Computing `Battery_Degradation_Factor` using charging cycles and device age.
-- Calculating `Average_Power_Consumption` based on usage patterns.
-- Scaling features using `StandardScaler`.
-- Handling missing values and removing outliers using IQR filtering.
+## File: `Frame.java`
 
-## Models Implemented
-### Single Model Training (`Single_Models.py`)
-The following models are trained and evaluated using cross-validation:
-- Linear Regression, Lasso, Ridge, ElasticNet
-- Decision Tree, Random Forest, Gradient Boosting, XGBoost
-- Support Vector Regression, K-Nearest Neighbors
-- AdaBoost, Bagging, Extra Trees
+### Imports
 
-Some models are fine-tuned using `RandomizedSearchCV` for hyperparameter optimization.
+*   `java.awt.Dimension`: Used to define the dimensions (width and height) of the window.
+*   `javax.swing.JPanel`:  The base class for the `Frame` class, allowing it to be added to the `JFrame`.
+*   `javax.swing.JFrame`: Provides the main window for the application.
 
-### Pairwise Ensemble Training (`Pair_Models.py`)
-- Pairs of models are combined using `StackingRegressor` to improve performance.
-- Ridge Regression is used as the final estimator.
-- Each model pair is evaluated on MSE, MAE, and R² scores.
+### Class Declaration
 
-## Running the Code
-Ensure you have the required dependencies installed:
-```bash
-pip install numpy pandas scikit-learn xgboost joblib openpyxl
+```java
+public class Frame extends JPanel {
+    // ...
+}
 ```
 
-To run single-model training:
-```bash
-python Single_Models.py
+*   Declares the `Frame` class, which inherits from `JPanel`. This makes the `Frame` itself a panel that can be added to the `JFrame`.
+
+### Class Members (Constants)
+
+*   `public static final int HEIGHT = 800;`: Defines the height of the game window as 800 pixels.  `static` and `final` means this value is constant and shared across all instances of the `Frame` class.
+*   `public static final int WIDTH = 800;`: Defines the width of the game window as 800 pixels. `static` and `final` means this value is constant and shared across all instances of the `Frame` class.
+*   `public static final String TITLE = "Tic-Tac-Toe";`: Defines the title of the game window as "Tic-Tac-Toe".  `static` and `final` means this value is constant and shared across all instances of the `Frame` class.
+
+### Class Members (Instance Variables)
+
+*   `private JFrame frame;`:  A `JFrame` object that represents the main window.  It's declared as `private` to encapsulate the `JFrame` object within the `Frame` class.
+
+### Constructor
+
+```java
+public Frame(Game game) {
+    frame = new JFrame(TITLE);
+    frame.setPreferredSize(new Dimension(WIDTH, HEIGHT));
+    frame.setMaximumSize(new Dimension(WIDTH, HEIGHT));
+    frame.setMinimumSize(new Dimension(WIDTH, HEIGHT));
+    frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+    frame.setLocationRelativeTo(null);
+    frame.pack();
+    frame.add(game);
+    frame.setVisible(true);
+    game.start();
+}
 ```
-To run pairwise model training:
-```bash
-python Pair_Models.py
+
+*   **`public Frame(Game game)`**:  The constructor for the `Frame` class. It accepts a `Game` object as a parameter, which represents the game logic and UI.
+
+    *   **`frame = new JFrame(TITLE);`**: Creates a new `JFrame` object with the title "Tic-Tac-Toe".
+    *   **`frame.setPreferredSize(new Dimension(WIDTH, HEIGHT));`**: Sets the preferred size of the frame to 800x800 pixels.
+    *   **`frame.setMaximumSize(new Dimension(WIDTH, HEIGHT));`**: Sets the maximum size of the frame to 800x800 pixels.  This and the previous line can prevent the user from resizing the window.
+    *   **`frame.setMinimumSize(new Dimension(WIDTH, HEIGHT));`**: Sets the minimum size of the frame to 800x800 pixels. This and the previous two lines effectively make the window unresizable.
+    *   **`frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);`**: Sets the default close operation to exit the application when the window is closed.
+    *   **`frame.setLocationRelativeTo(null);`**: Centers the window on the screen.
+    *   **`frame.pack();`**: Sizes the frame so that all its contents are at or above their preferred sizes.
+    *   **`frame.add(game);`**: Adds the `Game` panel to the frame, making it visible within the window.
+    *   **`frame.setVisible(true);`**: Makes the frame visible to the user.
+    *   **`game.start();`**: Calls the `start()` method of the `Game` object, presumably to initialize and start the game logic.
+
+## Functionality
+
+The `Frame` class is responsible for:
+
+*   Creating the main application window.
+*   Setting the window's size and title.
+*   Centering the window on the screen.
+*   Adding the `Game` panel to the window, displaying the Tic-Tac-Toe board.
+*   Starting the game logic.
+*   Handling the window close operation (exiting the application).
+
+## Dependencies
+
+*   `Game.java` (The game logic and UI component)
+
+## Usage
+
+To use the `Frame` class, you need to:
+
+1.  Create an instance of the `Game` class.
+2.  Create an instance of the `Frame` class, passing the `Game` object to the constructor.  This will create and display the game window.
+
+```java
+Game game = new Game();
+Frame frame = new Frame(game);
 ```
 
-## Evaluation Metrics
-Models are evaluated using:
-- **Mean Squared Error (MSE)**: Measures prediction error.
-- **Mean Absolute Error (MAE)**: Measures average absolute error.
-- **R² Score**: Measures the proportion of variance explained by the model.
+## Notes
 
-## Future Improvements
-- Implement deep learning models using TensorFlow/PyTorch.
-- Experiment with Quantum Neural Networks (QNN) using Qiskit.
-- Incorporate real-time battery performance monitoring.
-
-
+*   The `Frame` class sets both the maximum and minimum sizes of the window, effectively preventing the user from resizing it.  If resizing is desired, these lines should be removed or modified.
+*   The `game.start()` method call suggests that the `Game` class has a method to initialize and begin the game.
